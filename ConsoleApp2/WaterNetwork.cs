@@ -221,5 +221,65 @@ public class WaterNetwork
        
         return (waternet);
     }
-    
+
+    public class Node_graph
+    {
+        public string Name;
+        public List<Arc> Arcs = new List<Arc>();
+
+        public Node_graph(string name)
+        {
+            Name = name;
+        }
+
+        /// <summary>
+        /// Create a new arc, connecting this Node to the Nod passed in the parameter
+        /// Also, it creates the inversed node in the passed node
+        /// </summary>
+        public Node_graph AddArc(Node_graph child, int w)
+        {
+            Arcs.Add(new Arc
+            {
+                Parent = this,
+                Child = child,
+                Weigth = w
+            });
+
+            if (!child.Arcs.Exists(a => a.Parent == child && a.Child == this))
+            {
+                child.AddArc(this, w);
+            }
+
+            return this;
+        }
+        public class Arc
+        {
+            public int Weigth;
+            public Node_graph Parent;
+            public Node_graph Child;
+        }
+        public class Graph_1
+        {
+            public Node_graph Root;
+            public List<Node_graph> AllNodes = new List<Node_graph>();
+
+            public Node_graph CreateRoot(string name)
+            {
+                Root = CreateNode(name);
+                return Root;
+            }
+
+            public Node_graph CreateNode(string name)
+            {
+                var n = new Node_graph(name);
+                AllNodes.Add(n);
+                return n;
+            }
+
+            public int?[,] CreateAdjMatrix()
+            {
+                return null; // Matrix will be created here...
+            }
+        }
+    }
 }

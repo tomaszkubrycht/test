@@ -19,7 +19,11 @@ namespace ConsoleApp2
       static void Main(string[] args)
       {
          var waterNetwork = new WaterNetwork();
-         var test = waterNetwork.readwaternetwork(@"c:\data\data1.inp");
+         string homePath = (Environment.OSVersion.Platform == PlatformID.Unix || 
+                            Environment.OSVersion.Platform == PlatformID.MacOSX)
+            ? Environment.GetEnvironmentVariable("HOME")
+            : Environment.ExpandEnvironmentVariables("%HOMEDRIVE%%HOMEPATH%");
+         var test = waterNetwork.readwaternetwork(homePath+@"/data/data1.inp");
          var pipenumbers = test._pipes.Count();
          var graph = new Graph();
          var matrixA1 = graph.CreateAdjMatrix(test);
