@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "sVDYToviYMOPCEaqVS3/bIphmvmH/GAMA9S5dav9R0V0tIlC/Q5gClzMObYmoq/SavLEd16orD6D2nwBvfw18A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\tomas\\RiderProjects\\ConsoleApp2\\ConsoleApp2\\ConsoleApp2.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\tomas\\.nuget\\packages\\mathnet.numerics\\5.0.0\\mathnet.numerics.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
