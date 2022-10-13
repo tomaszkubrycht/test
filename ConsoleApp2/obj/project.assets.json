@@ -14,6 +14,19 @@
             "related": ".xml"
           }
         }
+      },
+      "PriorityQueues/2.0.2": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/PriorityQueues.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/netstandard2.0/PriorityQueues.dll": {
+            "related": ".xml"
+          }
+        }
       }
     }
   },
@@ -39,32 +52,55 @@
         "mathnet.numerics.5.0.0.nupkg.sha512",
         "mathnet.numerics.nuspec"
       ]
+    },
+    "PriorityQueues/2.0.2": {
+      "sha512": "UdnU5UcTel8+br5UWxkAE3W7Ya4fhMpBDnmzX+x2vwlmZCBV2E7rY1p3WcPMprRHzYjDguoIXdE+A0bAjqJedg==",
+      "type": "package",
+      "path": "priorityqueues/2.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "lib/netstandard2.0/PriorityQueues.dll",
+        "lib/netstandard2.0/PriorityQueues.xml",
+        "priorityqueues.2.0.2.nupkg.sha512",
+        "priorityqueues.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
-      "MathNet.Numerics >= 5.0.0"
+      "MathNet.Numerics >= 5.0.0",
+      "PriorityQueues >= 2.0.2"
     ]
   },
   "packageFolders": {
-    "/Users/tomaszkubrycht/.nuget/packages/": {}
+    "C:\\Users\\tomas\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/tomaszkubrycht/RiderProjects/test/ConsoleApp2/ConsoleApp2.csproj",
+      "projectUniqueName": "C:\\Users\\tomas\\RiderProjects\\ConsoleApp2\\ConsoleApp2\\ConsoleApp2.csproj",
       "projectName": "ConsoleApp2",
-      "projectPath": "/Users/tomaszkubrycht/RiderProjects/test/ConsoleApp2/ConsoleApp2.csproj",
-      "packagesPath": "/Users/tomaszkubrycht/.nuget/packages/",
-      "outputPath": "/Users/tomaszkubrycht/RiderProjects/test/ConsoleApp2/obj/",
+      "projectPath": "C:\\Users\\tomas\\RiderProjects\\ConsoleApp2\\ConsoleApp2\\ConsoleApp2.csproj",
+      "packagesPath": "C:\\Users\\tomas\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\tomas\\RiderProjects\\ConsoleApp2\\ConsoleApp2\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "/Users/tomaszkubrycht/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\tomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -86,6 +122,10 @@
           "MathNet.Numerics": {
             "target": "Package",
             "version": "[5.0.0, )"
+          },
+          "PriorityQueues": {
+            "target": "Package",
+            "version": "[2.0.2, )"
           }
         },
         "imports": [
@@ -104,7 +144,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.401/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -26,6 +26,9 @@ namespace ConsoleApp2
          var test = waterNetwork.readwaternetwork(homePath+@"/data/data1.inp");
          var pipenumbers = test._pipes.Count();
          var graph = new Graph();
+         
+         
+        
          var matrixA1 = graph.CreateAdjMatrix(test);
          var matrixA2 = graph.CreateA2Matrix(test);
          Console.Write(matrixA1.ToString());
@@ -34,16 +37,9 @@ namespace ConsoleApp2
          var Gmatrix = graph.CreateGmatrix(test,initflow);
          var elevation = graph.createElevationVect(test);
          var demand = graph.createDemandvect(test);
-
-        do
-        {
-           Result result = graph.findresult(matrixA1, matrixA2, Gmatrix, elevation, demand, initflow);
-           initflow = result.flow;
-           
-           Gmatrix = graph.CreateGmatrix(test, initflow);
-
-        } while (true);
-        //Result result = graph.findresult(matrixA1, matrixA2, Gmatrix, elevation, demand, initflow);
+        ///ustawic macierz
+        
+        Result result = graph.findresult(matrixA1, matrixA2, Gmatrix, elevation, demand, initflow);
       }
    }
 }

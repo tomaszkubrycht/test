@@ -4,6 +4,7 @@ using System.Xml;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Complex;
 using MathNet.Numerics.LinearAlgebra.Double;
+using PriorityQueues;
 using Matrix = MathNet.Numerics.LinearAlgebra.Complex.Matrix;
 using Vector = MathNet.Numerics.LinearAlgebra.Double.Vector;
 
@@ -23,7 +24,9 @@ public class Graph
     public Dictionary<int, WaterNetwork.Pipe> Pipes = new Dictionary<int, WaterNetwork.Pipe>();
     public Matrix<double> CreateAdjMatrix(WaterNetwork.Waternetwork waterNetwork)
     {
-       
+
+        
+  
         
         var tom = waterNetwork._pipes.Where(a=>a.Type=="Pipe").Select(x => x.end_node).Where(y=>(y._head==0)).ToList();
         var tom2 = waterNetwork._pipes.Where(a=>a.Type=="Pipe").Select(x => x.start_node).Where(y=>y._head==0).ToList();
