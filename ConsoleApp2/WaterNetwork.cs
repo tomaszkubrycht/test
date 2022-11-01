@@ -1,4 +1,7 @@
+using MathNet.Numerics.LinearAlgebra;
+using MathNet.Numerics.LinearAlgebra.Double;
 using PriorityQueues;
+using Spectre.Console;
 
 namespace ConsoleApp2;
 
@@ -15,6 +18,8 @@ public class WaterNetwork
     {
         private static int Junktionnr = 0;
         private int _objectID;
+        public double flow;
+
         public int ObjectID
         {
             get { return _objectID; }
@@ -24,6 +29,7 @@ public class WaterNetwork
             Junktionnr++;
             _objectID = Junktionnr;
         }
+        public string reversedirection { get; set; }
         public string pump_parameter { get; set; }
         public double Roughness { get; set; }
         public double _diameter { get; set; }
@@ -237,7 +243,8 @@ public class WaterNetwork
             pipe.end_node = _node.Where(x => x._name == line1[2].Trim(' ')).First();
             pipe.lenght = Convert.ToDouble(line1[3].Trim(' ').Replace('.', ','));
             pipe._diameter = Convert.ToDouble(line1[4].Trim(' ').Replace('.', ','));
-            pipe.Roughness = Convert.ToDouble(line1[5].Trim(' ').Replace('.', ','));
+            //pipe.Roughness = Convert.ToDouble(line1[5].Trim(' ').Replace('.', ','));
+            pipe.Roughness = 0.022;
             pipe.MinorLoss = Convert.ToDouble(line1[6].Trim(' ').Replace('.', ','));
             pipe.Status = line1[7].Trim(' ');
             pipe.Type = "Pipe";
@@ -251,73 +258,149 @@ public class WaterNetwork
 
         return (waternet);
     }
-
-   
-
-        
-
-
-
-        /*public class Node
+    public void WriteResultsSim(Result rezultat, Waternetwork waternetwork)
         {
-            public string Name;
-            public List<Arc> Arcs = new List<Arc>();
-    
-            public Node_graph(string name)
+            var pipes=waternetwork._pipes.OrderBy(x => x.ObjectID).ToList();
+            for (int i = 0; i < rezultat.flow.Count(); i++)
             {
-                Name = name;
+                pipes[i].flow = rezultat.flow[i];
+                AnsiConsole.WriteLine("[red]" + pipes[i].ObjectID + "[/]"+pipes[i].flow);
             }
-    
-            /// <summary>
-            /// Create a new arc, connecting this Node to the Nod passed in the parameter
-            /// Also, it creates the inversed node in the passed node
-            /// </summary>
-            public Node AddArc(Node child, int w)
+
+            foreach (var item in waternetwork._pipes)
             {
-                Arcs.Add(new Arc
+                if (item.flow<0)
                 {
-                    Parent = this,
-                    Child = child,
-                    Weigth = w
-                });
-    
-                if (!child.Arcs.Exists(a => a.Parent == child && a.Child == this))
-                {
-                    child.AddArc(this, w);
-                }
-    
-                return this;
-            }
-            public class Arc
-            {
-                public int Weigth;
-                public Node Parent;
-                public Node Child;
-            }
-            public class Graph_1
-            {
-                public Node Root;
-                public List<Node> AllNodes = new List<Node>();
-    
-                public Node CreateRoot(string node)
-                {
-                    Root = CreateNode(node);
-                    return Root;
-                }
-    
-                public Node CreateNode(string name)
-                {
-                    var n = new Node();
-                    AllNodes.Add(n);
-                    return n;
-                }
-    
-                public int?[,] CreateAdjMatrix()
-                {
-                    return null; // Matrix will be created here...
+                    item.reversedirection = "T";
+                    var start = item.start_node;
+                    var end = item.end_node;
+                    item.start_node = end;
+                    item.end_node = start;
                 }
             }
-        }*/
-       
+        }
+
+    public int orderNetwork(Waternetwork test, Result rezultat)
+    {
+        var pipes=test._pipes.OrderBy(x => x.ObjectID).ToList();
+        foreach (var item in test._pipes)
+        {
+            if (item.flow<0)
+            {
+                if (item.reversedirection == "T")
+                {
+                    item.reversedirection = "N";
+                }
+                else
+                {
+                    item.reversedirection = "T";
+                }
+
+                var start = item.start_node;
+                var end = item.end_node;
+                item.start_node = end;
+                item.end_node = start;
+            }
+        }
+
+        return 0;
     }
+
+    public Matrix<double> createA2matrix(Waternetwork test)
+    {
+        List<WaterNetwork.Pipe> pipe = new List<WaterNetwork.Pipe>();
+        pipe = test._pipes.OrderBy(x => x.ObjectID).ToList();
+        Dictionary<int, WaterNetwork.Node> dictionary = new Dictionary<int, WaterNetwork.Node>();
+        Dictionary<int, WaterNetwork.Pipe> dictionary1 = new Dictionary<int, WaterNetwork.Pipe>();
+        List<WaterNetwork.Node> nodesnohead = new List<WaterNetwork.Node>();
+         
+        var nodesnohead1 = pipe.Select(x => x.end_node).Where(y => y._head != 0).ToList();
+        var nodesnohead2 = pipe.Select(x => x.start_node).Where(y => y._head != 0).ToList();
+        nodesnohead1.AddRange(nodesnohead2);
+        nodesnohead = nodesnohead1.Distinct().OrderBy(x => x._nodeid).ToList();
+        for (int i = 0; i < pipe.Count; i++)
+        {
+            dictionary1.Add(i, pipe[i]);
+        }
+        for (int i = 0; i < nodesnohead.Count(); i++)
+        {
+            dictionary.Add(i, nodesnohead[i]);
+        }
+        double[,] arrayA2 = new double[pipe.Count, nodesnohead.Count()];
+        for (int i = 0; i < pipe.Count; i++)
+        {
+            for (int j = 0; j < nodesnohead.Count(); j++)
+            {
+                if (pipe[i].start_node._nodeid == nodesnohead[j]._nodeid)
+                {
+                    arrayA2[i, j] = 1;
+                }
+                else if ((pipe[i].end_node._nodeid == nodesnohead[j]._nodeid))
+                {
+                    arrayA2[i, j] = -1;
+                }
+                else
+                {
+                    arrayA2[i, j] = 0;
+                }
+            }
+        }
+
+        Matrix<double> A2matrix = Matrix.Build.DenseOfArray(arrayA2);
+        return A2matrix;
+    }
+
+    public Matrix<double> createA1matrix(Waternetwork test)
+    {
+        
+        List<WaterNetwork.Pipe> pipe = new List<WaterNetwork.Pipe>();
+        pipe = test._pipes.OrderBy(x => x.ObjectID).ToList();
+        List<WaterNetwork.Node> nodeshead = new List<WaterNetwork.Node>();
+        Dictionary<int, WaterNetwork.Node> dictionaryhead = new Dictionary<int, WaterNetwork.Node>();
+        var nodeshead1 = pipe.Select(x => x.end_node).Where(y => y._head == 0).ToList();
+        var nodeshead2 = pipe.Select(x => x.start_node).Where(y => y._head == 0).ToList();
+        nodeshead1.AddRange(nodeshead2);
+        nodeshead = nodeshead1.Distinct().OrderBy(x => x._nodeid).ToList();
+
+        for (int i = 0; i < nodeshead.Count(); i++)
+        {
+            dictionaryhead.Add(i, nodeshead[i]);
+        }
+        double[,] arrayA1 = new double[pipe.Count(), nodeshead.Count()];
+        for (int i = 0; i < nodeshead.Count(); i++)
+        {
+            for (int j = 0; j < pipe.Count(); j++)
+            {
+                if (pipe[j].start_node._nodeid == nodeshead[i]._nodeid)
+                {
+                    arrayA1[j, i] = 1;
+                }
+                else if ((pipe[j].end_node._nodeid == nodeshead[i]._nodeid))
+                {
+                    arrayA1[j, i] = -1;
+                }
+                else
+                {
+                    arrayA1[j, i] = 0;
+                }
+            }
+        }
+        var A1matrix = Matrix.Build.DenseOfArray(arrayA1);
+        return A1matrix;
+    }
+
+    public Result waternetSim(Waternetwork test, Vector<double> initflow1)
+    {
+        var waterNetwork = new WaterNetwork();
+        var graph = new Graph();
+        
+        var A2matrix1 = waterNetwork.createA2matrix(test);
+        var A1matrix1 = waterNetwork.createA1matrix(test);
+        var Gmatrix1 = graph.CreateGmatrix(test, initflow1);
+        var elevation1 = graph.createElevationVect(test);
+        var demand1 = graph.createDemandvect(test);
+        
+        return graph.findresult(A1matrix1, A2matrix1, Gmatrix1, elevation1, demand1, initflow1);
+    }
+}
 

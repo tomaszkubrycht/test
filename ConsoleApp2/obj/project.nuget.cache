@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "BqGlUQ7RPYec/zB2pfexFnS7IKMXBEFwLYtXy/b5/YRXPjITLONAo4IugsrMOp0bhwLrM4ewEgbKKxAJmUvfPQ==",
+  "dgSpecHash": "ZSEG1EZv8bYWVSHIdgLBXYn/6zMfRdLfuAtyFnyRY4R0xoC6TabmNBtkS06/JAbTcQnc5O3xsZoa/875jzjj2A==",
   "success": true,
   "projectFilePath": "C:\\Users\\tomas\\RiderProjects\\ConsoleApp2\\ConsoleApp2\\ConsoleApp2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\tomas\\.nuget\\packages\\mathnet.numerics\\5.0.0\\mathnet.numerics.5.0.0.nupkg.sha512",
-    "C:\\Users\\tomas\\.nuget\\packages\\priorityqueues\\2.0.2\\priorityqueues.2.0.2.nupkg.sha512"
+    "C:\\Users\\tomas\\.nuget\\packages\\priorityqueues\\2.0.2\\priorityqueues.2.0.2.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\spectre.console\\0.45.1-preview.0.27\\spectre.console.0.45.1-preview.0.27.nupkg.sha512",
+    "C:\\Users\\tomas\\.nuget\\packages\\system.memory\\4.5.5\\system.memory.4.5.5.nupkg.sha512"
   ],
   "logs": []
 }

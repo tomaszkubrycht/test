@@ -5,7 +5,7 @@ using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Complex;
 using MathNet.Numerics.LinearAlgebra.Double;
 using PriorityQueues;
-using Matrix = MathNet.Numerics.LinearAlgebra.Complex.Matrix;
+using Matrix = MathNet.Numerics.LinearAlgebra.Double.Matrix;
 using Vector = MathNet.Numerics.LinearAlgebra.Double.Vector;
 
 namespace ConsoleApp2;
@@ -151,7 +151,7 @@ public class Graph
             }            
         }
        var Gmatrix= Matrix<double>.Build.DenseOfArray(array); 
-       Console.Write(Gmatrix.ToString()); 
+       //Console.Write(Gmatrix.ToString()); 
        return Gmatrix;
     }
     
@@ -182,22 +182,27 @@ public class Graph
     var tom1 = Math.Log((epsylon / (3.7 * diameter * 1000))+(5.74 / Math.Pow(Re, 0.9)));
     var fe = 0.25 / (Math.Pow((Math.Log10((epsylon / (3.7 * diameter * 1000)) + (5.74 / (Math.Pow(Re, 0.9))))), 2));
     var rf = (8 * fe * pipe.lenght) / (Math.Pow(Math.PI, 2) * 9.81 * Math.Pow(diameter, 5));
+    
     var gel = 1 / (rf * Math.Abs(pipeflow));
+    if (gel<0.0001)
+    {
+        gel = 0;
+    }
     return gel;
 }
 
 
     public Vector<double> createElevationVect(WaterNetwork.Waternetwork test)
     {
-        var nodes1=test._pipes.Where(y=>y.end_node._type=="Junction").Select(x => x.start_node).ToList();
-        var nodes2 = test._pipes.Where(y=>y.start_node._type=="Junction").Select(x => x.end_node).ToList();
+        var nodes1=test._pipes.Select(x => x.start_node).ToList();
+        var nodes2 = test._pipes.Select(x => x.end_node).ToList();
         nodes1.AddRange(nodes2);
         List<WaterNetwork.Node> nodeslist = nodes1.Distinct().OrderBy(y=>y._nodeid).ToList();
-        var elevation1 = nodeslist.Select(x =>  x._z).ToArray();
+        var elevation1 = nodeslist.Where(y=>y._head!=0).Select(x =>  x._head).ToArray();
+        var elevation = Vector<double>.Build.DenseOfArray(elevation1);
         
-        
-        var elevation = Vector<double>.Build.DenseOfArray(new double[]{80,50});
-        return elevation;
+        //var elevation1 = Vector<double>.Build.DenseOfArray(elevation);
+        return elevation; //elevation;
     }
 
     public Vector<double> createDemandvect(WaterNetwork.Waternetwork test)
@@ -207,7 +212,7 @@ public class Graph
         nodes1.AddRange(nodes2);
         List<WaterNetwork.Node> nodeslist = nodes1.Distinct().OrderBy(y=>y._nodeid).ToList();
         var nulldemand=nodeslist.Where(y => (y._demand) == null).ToList();
-        var demand = nodeslist.Where(y=>(y._demand)!=null).Select(x => x._demand.First()).ToArray();
+        var demand = nodeslist.Where(y=>(y._demand)!=null).Select(x => x._demand.First()/1000).ToArray();
         //var demandvect = Vector<double>.Build.DenseOfArray(new double[] { });
         
         
@@ -231,10 +236,10 @@ public class Graph
         Vector<double> d, Vector<double> q)
     {
         ConsoleApp2.Result result = new Result();
-        var U = 1 / (marA1.Transpose() * g * marA1);
-        var U1 = g * a2.Transpose() * elev;
-        result.head = (1 / U) * (-d + marA1.Transpose() * ((1 - 2) * q - g * a2.Transpose() * elev));
-        result.flow = 0.5 * (q + g * (a2.Transpose() * elev + marA1 * result.head));
+        var U =  (marA1.Transpose() * g * marA1);
+        var U1 = g * a2 * elev;
+        result.head = ( U.Inverse()) * (-d*2 + marA1.Transpose() * ((1 - 2) * q - g * a2 * elev));
+        result.flow = 0.5 * (q + g * (a2 * elev + marA1 * result.head));
         return result;
     }
 }

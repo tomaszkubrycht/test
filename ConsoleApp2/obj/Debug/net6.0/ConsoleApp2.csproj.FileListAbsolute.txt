@@ -33,3 +33,4 @@ C:\Users\tomas\RiderProjects\ConsoleApp2\ConsoleApp2\obj\Debug\net6.0\ConsoleApp
 C:\Users\tomas\RiderProjects\ConsoleApp2\ConsoleApp2\obj\Debug\net6.0\ConsoleApp2.genruntimeconfig.cache
 C:\Users\tomas\RiderProjects\ConsoleApp2\ConsoleApp2\obj\Debug\net6.0\ref\ConsoleApp2.dll
 C:\Users\tomas\RiderProjects\ConsoleApp2\ConsoleApp2\bin\Debug\net6.0\PriorityQueues.dll
+C:\Users\tomas\RiderProjects\ConsoleApp2\ConsoleApp2\bin\Debug\net6.0\Spectre.Console.dll

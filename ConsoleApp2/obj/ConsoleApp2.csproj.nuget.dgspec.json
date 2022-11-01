@@ -52,6 +52,10 @@
             "PriorityQueues": {
               "target": "Package",
               "version": "[2.0.2, )"
+            },
+            "Spectre.Console": {
+              "target": "Package",
+              "version": "[0.45.1-preview.0.27, )"
             }
           },
           "imports": [

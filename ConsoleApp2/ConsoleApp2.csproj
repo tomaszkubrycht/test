@@ -10,6 +10,7 @@
     <ItemGroup>
       <PackageReference Include="MathNet.Numerics" Version="5.0.0" />
       <PackageReference Include="PriorityQueues" Version="2.0.2" />
+      <PackageReference Include="Spectre.Console" Version="0.45.1-preview.0.27" />
     </ItemGroup>
 
     <ItemGroup>
